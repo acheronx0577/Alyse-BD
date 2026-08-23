@@ -13,10 +13,10 @@ export default function Home() {
 
         <Link className="brand" href="#home" aria-label="Birthday home">
           <Image
-            src="/assets/party-cat-logo.png"
-            alt="Cute birthday cat"
+            src="/assets/party-cat-logo.webp"
+            alt="Cute birthday cat with party hat"
             width={160}
-            height={160}
+            height={107}
             priority
           />
         </Link>
@@ -57,11 +57,10 @@ export default function Home() {
       <span className="heart h4">♡</span>
       <span className="heart h5">♡</span>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="party-art"
-        src="/assets/party-cats.png"
-        alt="Cute birthday cats celebrating with cake, gifts, balloons, hearts and yarn"
+      <div
+        className="party-art party-art-fallback"
+        role="img"
+        aria-label="Birthday celebration decorations with balloons, gifts, and hearts"
       />
     </main>
   );
