@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { PageShell } from "../PageShell";
 
 const GALLERY_ITEMS = [
@@ -25,7 +26,7 @@ export default function GalleryPage() {
             >
               <div className={`gallery-thumb${item.featured ? " featured-thumb" : ""}`}>
                 {item.featured ? (
-                  <img
+                  <Image
                     src="/assets/party-cat-logo.webp"
                     alt="Cute birthday cat with party hat"
                     width={160}
