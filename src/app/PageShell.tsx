@@ -5,12 +5,14 @@ export function PageShell({
   variant = "content",
 }: {
   children: React.ReactNode;
-  variant?: "home" | "content";
+  variant?: "home" | "content" | "gallery";
 }) {
   return (
-    <main className={`page${variant === "home" ? " page-home" : ""}`}>
+    <main
+      className={`page${variant === "home" ? " page-home" : ""}${variant === "gallery" ? " page-fit" : ""}`}
+    >
       <SiteNav />
-      {children}
+      <div className="page-main">{children}</div>
       <div
         className="party-art party-art-fallback"
         role="img"

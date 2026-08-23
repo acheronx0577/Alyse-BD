@@ -10,8 +10,8 @@ const GALLERY_ITEMS = [
 
 export default function GalleryPage() {
   return (
-    <PageShell>
-      <section className="content-section">
+    <PageShell variant="gallery">
+      <section className="content-section gallery-page">
         <div className="section-intro">
           <h1>Birthday Gallery 🎁</h1>
           <p>Memories, smiles, and a very important party cat.</p>
