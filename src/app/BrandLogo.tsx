@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export function BrandLogo() {
   return (
-    <a className="brand" href="#home" aria-label="Birthday home">
+    <Link className="brand" href="/" aria-label="Birthday home">
       <span className="brand-logo">
         <img
           className="brand-logo-default"
@@ -18,6 +20,6 @@ export function BrandLogo() {
           height={107}
         />
       </span>
-    </a>
+    </Link>
   );
 }

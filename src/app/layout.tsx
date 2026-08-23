@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
 
@@ -31,7 +32,7 @@ export default function RootLayout({
       </head>
       <body>
         <ConvexClientProvider>{children}</ConvexClientProvider>
-        <script src="/brand-bounce.js" />
+        <Script src="/brand-bounce.js" strategy="afterInteractive" />
       </body>
     </html>
   );

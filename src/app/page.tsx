@@ -1,26 +1,10 @@
 import Link from "next/link";
-import { BrandLogo } from "./BrandLogo";
+import { PageShell } from "./PageShell";
 
 export default function Home() {
   return (
-    <main className="page">
-      <header className="nav">
-        <nav className="nav-group left" aria-label="Primary navigation">
-          <Link href="#home">Home</Link>
-          <Link href="#about">About Alyse</Link>
-          <Link href="#gallery">Gallery</Link>
-        </nav>
-
-        <BrandLogo />
-
-        <nav className="nav-group right" aria-label="Secondary navigation">
-          <Link href="#messages">Messages</Link>
-          <Link href="#surprises">Surprises</Link>
-          <Link href="#contact">Contact</Link>
-        </nav>
-      </header>
-
-      <section className="hero" id="home">
+    <PageShell variant="home">
+      <section className="hero">
         <h1>
           Happy Birthday Alyse!
           <span className="heart-float">♥</span>
@@ -33,27 +17,21 @@ export default function Home() {
         </p>
 
         <div className="actions">
-          <Link className="btn primary" href="#celebrate">
+          <Link className="btn primary" href="/surprises">
             Celebrate Alyse <span aria-hidden="true">♥</span>
           </Link>
 
-          <Link className="btn secondary" href="#gallery">
+          <Link className="btn secondary" href="/gallery">
             Birthday Gallery <span aria-hidden="true">🎁</span>
           </Link>
         </div>
+
+        <span className="heart h1">♡</span>
+        <span className="heart h2">♡</span>
+        <span className="heart h3">♡</span>
+        <span className="heart h4">♡</span>
+        <span className="heart h5">♡</span>
       </section>
-
-      <span className="heart h1">♡</span>
-      <span className="heart h2">♡</span>
-      <span className="heart h3">♡</span>
-      <span className="heart h4">♡</span>
-      <span className="heart h5">♡</span>
-
-      <div
-        className="party-art party-art-fallback"
-        role="img"
-        aria-label="Birthday celebration decorations with balloons, gifts, and hearts"
-      />
-    </main>
+    </PageShell>
   );
 }
