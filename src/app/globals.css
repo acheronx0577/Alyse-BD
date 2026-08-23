@@ -48,6 +48,7 @@ a {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 28px;
+  overflow: visible;
 }
 
 .nav-group {
@@ -63,11 +64,11 @@ a {
   justify-content: flex-end;
 }
 
-.nav a {
+.nav-group a {
   transition: transform 0.18s ease, color 0.18s ease;
 }
 
-.nav a:hover {
+.nav-group a:hover {
   color: var(--pink-strong);
   transform: translateY(-2px);
 }
@@ -76,13 +77,71 @@ a {
   width: 160px;
   display: grid;
   place-items: center;
+  transform-origin: bottom center;
+  overflow: visible;
 }
 
-.brand img {
+.brand.is-bouncing {
+  animation: brand-bounce 0.45s ease-out;
+}
+
+.brand-logo {
+  position: relative;
+  display: block;
   width: 160px;
+  height: 107px;
+  isolation: isolate;
+  transform-origin: bottom center;
+}
+
+.brand-logo img {
+  width: 160px;
+  height: 107px;
   max-width: 100%;
   display: block;
   object-fit: contain;
+  object-position: bottom center;
+  background: transparent;
+}
+
+.brand-logo-default {
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.25s ease;
+}
+
+.brand-logo-hover {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 160px;
+  height: 107px;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.brand:hover .brand-logo-default {
+  opacity: 0;
+}
+
+.brand:hover .brand-logo-hover {
+  opacity: 1;
+}
+
+@keyframes brand-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-7px) scale(1.025);
+  }
+  70% {
+    transform: translateY(0) scale(0.99);
+  }
 }
 
 /* HERO */
@@ -281,8 +340,14 @@ h1 {
     justify-self: end;
   }
 
-  .brand img {
+  .brand-logo {
     width: 115px;
+    height: 77px;
+  }
+
+  .brand-logo img {
+    width: 115px;
+    height: 77px;
   }
 
   .hero {

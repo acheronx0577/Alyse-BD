@@ -15,8 +15,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/assets/party-cat-logo.webp"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/assets/party-cat-hover.webp"
+          type="image/webp"
+        />
+      </head>
       <body>
         <ConvexClientProvider>{children}</ConvexClientProvider>
+        <script src="/brand-bounce.js" />
       </body>
     </html>
   );

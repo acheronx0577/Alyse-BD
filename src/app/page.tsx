@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { BrandLogo } from "./BrandLogo";
 
 export default function Home() {
   return (
@@ -11,15 +11,7 @@ export default function Home() {
           <Link href="#gallery">Gallery</Link>
         </nav>
 
-        <Link className="brand" href="#home" aria-label="Birthday home">
-          <Image
-            src="/assets/party-cat-logo.webp"
-            alt="Cute birthday cat with party hat"
-            width={160}
-            height={107}
-            priority
-          />
-        </Link>
+        <BrandLogo />
 
         <nav className="nav-group right" aria-label="Secondary navigation">
           <Link href="#messages">Messages</Link>
