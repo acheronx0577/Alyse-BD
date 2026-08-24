@@ -386,56 +386,71 @@ button.btn {
   font-weight: 800;
 }
 
-/* GALLERY */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-md);
-}
-
-.gallery-card {
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: white;
-  border: 3px solid rgba(255, 128, 147, 0.15);
-  box-shadow: 0 6px 18px rgba(255, 121, 145, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gallery-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(255, 121, 145, 0.18);
-}
-
-.gallery-card.featured {
-  grid-row: span 2;
-}
-
-.gallery-thumb {
-  aspect-ratio: 1;
+/* GALLERY — BounceCards scrapbook */
+.gallery-bounce-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
   display: grid;
   place-items: center;
-  font-size: clamp(2rem, 1.5rem + 1.5vw, 3.25rem);
-  background: linear-gradient(160deg, var(--pink-soft), #fff);
+  overflow: hidden;
+  container-type: size;
+  container-name: gallery-bounce;
 }
 
-.gallery-thumb.featured-thumb {
-  aspect-ratio: auto;
-  min-height: 100%;
-  padding: var(--space-xl);
+/* Design layout is 1900×920; scale to fit wrap at any viewport */
+.gallery-bounceCards.bounceCardsContainer {
+  width: 1900px !important;
+  height: 920px !important;
+  transform: scale(min(1, calc(100cqw / 1900px), calc(100cqh / 920px)));
+  transform-origin: center center;
 }
 
-.gallery-thumb img {
-  width: min(100%, clamp(140px, 12vw + 80px, 220px));
-  height: auto;
-  object-fit: contain;
+.gallery-sticker {
+  position: absolute;
+  z-index: 2;
+  font-size: 1.35rem;
+  color: var(--pink-strong);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(255, 121, 145, 0.25));
 }
 
-.gallery-caption {
-  padding: var(--space-sm) var(--space-md);
-  font-size: clamp(0.75rem, 0.7rem + 0.15vw, 0.9rem);
-  font-weight: 800;
+.gallery-sticker-star {
+  top: 12%;
+  left: 18%;
+  color: #7ec8ff;
+  transform: rotate(-12deg);
+}
+
+.gallery-sticker-heart {
+  top: 18%;
+  right: 20%;
+  color: #ff8093;
+  transform: rotate(10deg);
+}
+
+.gallery-note {
+  position: absolute;
+  z-index: 2;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.85rem, 0.75rem + 0.35vw, 1.05rem);
+  font-weight: 700;
   color: var(--ink-soft);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.gallery-note-left {
+  top: 22%;
+  left: 8%;
+  transform: rotate(-8deg);
+}
+
+.gallery-note-right {
+  bottom: 18%;
+  right: 6%;
+  transform: rotate(6deg);
 }
 
 /* GALLERY — single-screen fit */
@@ -451,8 +466,12 @@ button.btn {
 
 .page-fit .nav {
   min-height: auto;
-  padding: var(--space-xs) 0;
+  padding: 0;
   flex-shrink: 0;
+}
+
+.page-fit .brand {
+  width: clamp(72px, 4.5vw + 40px, 112px);
 }
 
 .page-fit .page-main {
@@ -461,10 +480,12 @@ button.btn {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: calc(100% - var(--page-gutter) * 2);
+  max-width: none;
 }
 
 .page-fit .party-art-fallback {
-  height: clamp(88px, 11vh, 140px);
+  height: clamp(56px, 7vh, 96px);
 }
 
 .page-fit .gallery-page {
@@ -472,64 +493,24 @@ button.btn {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   padding: var(--space-xs) 0 var(--space-sm);
   overflow: hidden;
 }
 
 .gallery-page .section-intro {
+  margin-top: 0;
   margin-bottom: var(--space-sm);
   flex-shrink: 0;
 }
 
 .gallery-page .section-intro h1 {
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  font-size: clamp(1.35rem, 1rem + 1vw, 2rem);
 }
 
 .gallery-page .section-intro p {
   font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem);
   margin-top: var(--space-2xs);
-}
-
-.gallery-page .gallery-grid {
-  flex: 1 1 auto;
-  min-height: 0;
-  grid-template-columns: minmax(0, 1.05fr) repeat(2, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-sm);
-  align-content: stretch;
-}
-
-.gallery-page .gallery-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.gallery-page .gallery-card.featured {
-  grid-row: 1 / -1;
-}
-
-.gallery-page .gallery-thumb {
-  flex: 1 1 auto;
-  min-height: 0;
-  aspect-ratio: unset;
-  font-size: clamp(1.5rem, 1rem + 1vw, 2.25rem);
-}
-
-.gallery-page .gallery-thumb.featured-thumb {
-  padding: var(--space-sm);
-}
-
-.gallery-page .gallery-thumb img {
-  width: min(100%, clamp(96px, 10vh + 48px, 160px));
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.gallery-page .gallery-caption {
-  flex-shrink: 0;
-  padding: var(--space-2xs) var(--space-sm);
-  font-size: clamp(0.68rem, 0.64rem + 0.12vw, 0.82rem);
 }
 
 /* MESSAGES */
@@ -865,7 +846,6 @@ button.btn {
   }
 
   .btn,
-  .gallery-card,
   .surprise-tile,
   .nav-group a {
     transition: none;
@@ -920,8 +900,8 @@ button.btn {
     padding: var(--space-xs) 0 var(--space-sm);
   }
 
-  .gallery-grid {
-    gap: var(--space-lg);
+  .gallery-bounceCards .card {
+    width: clamp(170px, 10.5vw, 250px);
   }
 
   .surprise-grid {
@@ -945,9 +925,8 @@ button.btn {
     font-size: clamp(1.75rem, 1.4rem + 0.8vw, 2.375rem);
   }
 
-  .gallery-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-xl);
+  .gallery-bounceCards .card {
+    width: clamp(185px, 10vw, 260px);
   }
 
   .surprise-grid {
@@ -984,21 +963,12 @@ button.btn {
     grid-template-columns: 1fr;
   }
 
-  .gallery-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .gallery-note-left {
+    left: 2%;
   }
 
-  .gallery-card.featured {
-    grid-row: span 1;
-  }
-
-  .gallery-page .gallery-grid {
-    grid-template-columns: minmax(0, 0.95fr) repeat(2, minmax(0, 1fr));
-    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .gallery-page .gallery-card.featured {
-    grid-row: 1 / -1;
+  .gallery-note-right {
+    right: 2%;
   }
 
   .surprise-grid {
@@ -1059,16 +1029,25 @@ button.btn {
   }
 
   .page-fit .brand {
-    width: clamp(72px, 16vw, 96px);
+    width: clamp(64px, 14vw, 88px);
   }
 
-  .gallery-page .gallery-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: minmax(0, 0.85fr) minmax(0, 1fr) minmax(0, 1fr);
+  /* Keep design card size; container scale already fits narrow viewports */
+  .gallery-bounceCards.bounceCardsContainer .card {
+    width: clamp(155px, 11vw, 245px);
+    border-width: clamp(10px, 0.85vw, 17px);
+    border-radius: clamp(15px, 1.15vw, 24px);
   }
 
-  .gallery-page .gallery-card.featured {
-    grid-column: 1 / -1;
-    grid-row: 1;
+  .gallery-bounceCards.bounceCardsContainer .card-caption {
+    font-size: clamp(0.78rem, 0.68rem + 0.32vw, 1rem);
+    left: clamp(0.45rem, 0.7vw, 0.75rem);
+    bottom: clamp(0.45rem, 0.7vw, 0.75rem);
+    padding: 0.28rem 0.55rem;
+  }
+
+  .gallery-note,
+  .gallery-sticker {
+    display: none;
   }
 }

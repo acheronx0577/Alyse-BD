@@ -1,0 +1,131 @@
+.bounceCardsContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 400px;
+  margin-inline: auto;
+}
+
+.bounceCardsContainer .card {
+  position: absolute;
+  width: clamp(155px, 11vw, 245px);
+  aspect-ratio: 3 / 4;
+  border: clamp(10px, 0.85vw, 17px) solid #fff7f0;
+  border-radius: clamp(15px, 1.15vw, 24px);
+  overflow: hidden;
+  box-shadow:
+    0 12px 30px rgba(73, 53, 39, 0.18),
+    0 3px 8px rgba(255, 121, 145, 0.12);
+  background: #fff;
+  cursor: pointer;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.bounceCardsContainer .card-0 {
+  border-color: #ff8fa3;
+  background: linear-gradient(160deg, #ffd5dc, #fff9f3);
+}
+
+.bounceCardsContainer .card-0 .image {
+  object-fit: contain;
+  padding: clamp(0.55rem, 0.9vw, 1.1rem);
+}
+
+.bounceCardsContainer .card-1 {
+  border-color: #9ad4ff;
+}
+
+.bounceCardsContainer .card-2 {
+  border-color: #ffc2d1;
+}
+
+.bounceCardsContainer .card-3 {
+  border-color: #ffe8a3;
+}
+
+.bounceCardsContainer .card-4 {
+  border-color: #fff7f0;
+}
+
+.bounceCardsContainer .card-5 {
+  border-color: #c9f0a5;
+}
+
+.bounceCardsContainer .card-6 {
+  border-color: #ffb4c4;
+}
+
+.bounceCardsContainer .card-7 {
+  border-color: #b8e0ff;
+}
+
+.bounceCardsContainer .card-8 {
+  border-color: #ffd5dc;
+}
+
+.bounceCardsContainer .card-9 {
+  border-color: #ffe8a3;
+}
+
+.bounceCardsContainer .card-10 {
+  border-color: #ff8fa3;
+}
+
+.bounceCardsContainer .card-11 {
+  border-color: #9ad4ff;
+}
+
+.bounceCardsContainer .card-12 {
+  border-color: #c9f0a5;
+}
+
+.bounceCardsContainer .card-13 {
+  border-color: #ffc2d1;
+}
+
+.bounceCardsContainer .card-14 {
+  border-color: #fff7f0;
+}
+
+.bounceCardsContainer .card .image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bounceCardsContainer .card-caption {
+  position: absolute;
+  left: clamp(0.45rem, 0.7vw, 0.75rem);
+  bottom: clamp(0.45rem, 0.7vw, 0.75rem);
+  max-width: calc(100% - 1.2rem);
+  padding: 0.28rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(40, 28, 22, 0.78);
+  color: #fff9f3;
+  font-size: clamp(0.78rem, 0.68rem + 0.32vw, 1rem);
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .bounceCardsContainer .card {
+    width: min(96px, 22vw);
+    border-width: 6px;
+    border-radius: 12px;
+  }
+
+  .bounceCardsContainer .card-caption {
+    font-size: 0.58rem;
+    left: 0.3rem;
+    bottom: 0.3rem;
+    padding: 0.16rem 0.35rem;
+  }
+}
