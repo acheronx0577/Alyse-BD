@@ -392,19 +392,53 @@ button.btn {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  display: grid;
-  place-items: center;
   overflow: hidden;
   container-type: size;
   container-name: gallery-bounce;
 }
 
-/* Design layout is 1900×920; scale to fit wrap at any viewport */
+/*
+  Fixed design canvas, then center + scale to fit.
+  translate(-50%, -50%) is required — scale alone leaves the
+  oversized layout box left-aligned when it overflows the wrap.
+*/
 .gallery-bounceCards.bounceCardsContainer {
-  width: 1900px !important;
-  height: 920px !important;
-  transform: scale(min(1, calc(100cqw / 1900px), calc(100cqh / 920px)));
+  --gallery-design-w: 1900px;
+  --gallery-design-h: 920px;
+  --gallery-fit: min(
+    1,
+    calc(100cqw / var(--gallery-design-w)),
+    calc(100cqh / var(--gallery-design-h))
+  );
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
+  width: var(--gallery-design-w) !important;
+  height: var(--gallery-design-h) !important;
+  margin: 0 !important;
   transform-origin: center center;
+  transform: translate(-50%, -50%) scale(var(--gallery-fit));
+}
+
+.gallery-bounceCards.bounceCardsContainer.is-laptop {
+  --gallery-design-w: 1320px;
+  --gallery-design-h: 720px;
+}
+
+.gallery-bounceCards.bounceCardsContainer.is-mobile {
+  --gallery-design-w: 360px;
+  --gallery-design-h: 560px;
+}
+
+@media (min-width: 761px) and (max-width: 1599px) {
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card {
+    width: clamp(175px, 13.5vw, 220px) !important;
+    border-width: clamp(10px, 0.85vw, 15px);
+  }
+
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card-caption {
+    font-size: clamp(0.8rem, 0.7rem + 0.32vw, 0.95rem);
+  }
 }
 
 .gallery-sticker {
@@ -900,10 +934,6 @@ button.btn {
     padding: var(--space-xs) 0 var(--space-sm);
   }
 
-  .gallery-bounceCards .card {
-    width: clamp(170px, 10.5vw, 250px);
-  }
-
   .surprise-grid {
     gap: var(--space-lg);
   }
@@ -1032,18 +1062,27 @@ button.btn {
     width: clamp(64px, 14vw, 88px);
   }
 
-  /* Keep design card size; container scale already fits narrow viewports */
+  .gallery-bounce-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gallery-bounceCards.bounceCardsContainer.is-mobile {
+    --gallery-design-w: 360px;
+    --gallery-design-h: 560px;
+  }
+
   .gallery-bounceCards.bounceCardsContainer .card {
-    width: clamp(155px, 11vw, 245px);
-    border-width: clamp(10px, 0.85vw, 17px);
-    border-radius: clamp(15px, 1.15vw, 24px);
+    width: min(108px, 29vw) !important;
+    border-width: 8px;
+    border-radius: 14px;
   }
 
   .gallery-bounceCards.bounceCardsContainer .card-caption {
-    font-size: clamp(0.78rem, 0.68rem + 0.32vw, 1rem);
-    left: clamp(0.45rem, 0.7vw, 0.75rem);
-    bottom: clamp(0.45rem, 0.7vw, 0.75rem);
-    padding: 0.28rem 0.55rem;
+    font-size: 0.62rem;
+    left: 0.35rem;
+    bottom: 0.35rem;
+    padding: 0.18rem 0.4rem;
   }
 
   .gallery-note,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./BounceCards.css";
 
@@ -44,13 +44,16 @@ export default function BounceCards({
   const activeIdxRef = useRef<number | null>(null);
   const pendingIdxRef = useRef<number | null>(null);
   const activateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transformStylesRef = useRef(transformStyles);
+  transformStylesRef.current = transformStyles;
 
   useEffect(() => {
+    const styles = transformStylesRef.current;
     const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
       mm.add("(prefers-reduced-motion: reduce)", () => {
         images.forEach((_, i) => {
-          const base = transformStyles[i] || "none";
+          const base = styles[i] || "none";
           gsap.set(`.card-${i}`, {
             transform: `${base} scale(1)`,
             opacity: 1,
@@ -60,7 +63,7 @@ export default function BounceCards({
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         images.forEach((_, i) => {
-          const base = transformStyles[i] || "none";
+          const base = styles[i] || "none";
           gsap.fromTo(
             `.card-${i}`,
             { transform: `${base} scale(0)`, opacity: 0 },
@@ -82,6 +85,21 @@ export default function BounceCards({
       if (activateTimerRef.current) clearTimeout(activateTimerRef.current);
     };
   }, [images, transformStyles, animationStagger, easeType, animationDelay]);
+
+  // When layout switches (mobile/desktop), snap cards to new transforms
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    images.forEach((_, i) => {
+      const base = transformStyles[i] || "none";
+      gsap.set(q(`.card-${i}`), {
+        transform: `${base} scale(1)`,
+        zIndex: i + 1,
+        pointerEvents: "auto",
+      });
+    });
+    activeIdxRef.current = null;
+  }, [transformStyles, images]);
 
   const getPushedTransform = (
     baseTransform: string,
@@ -124,13 +142,14 @@ export default function BounceCards({
     if (!containerRef.current) return;
 
     const q = gsap.utils.selector(containerRef);
+    const styles = transformStylesRef.current;
     activeIdxRef.current = hoveredIdx;
 
     images.forEach((_, i) => {
       const target = q(`.card-${i}`);
       gsap.killTweensOf(target);
 
-      const baseTransform = transformStyles[i] || "none";
+      const baseTransform = styles[i] || "none";
 
       if (i === hoveredIdx) {
         gsap.to(target, {
@@ -165,12 +184,13 @@ export default function BounceCards({
     if (!containerRef.current) return;
 
     const q = gsap.utils.selector(containerRef);
+    const styles = transformStylesRef.current;
     activeIdxRef.current = null;
 
     images.forEach((_, i) => {
       const target = q(`.card-${i}`);
       gsap.killTweensOf(target);
-      const baseTransform = transformStyles[i] || "none";
+      const baseTransform = styles[i] || "none";
       gsap.to(target, {
         transform: `${baseTransform} scale(1)`,
         zIndex: i + 1,
@@ -188,7 +208,6 @@ export default function BounceCards({
     pendingIdxRef.current = idx;
     clearActivateTimer();
 
-    // Fast sweeps never activate — only a settled hover does
     activateTimerRef.current = setTimeout(() => {
       if (pendingIdxRef.current !== idx) return;
       applyHoverState(idx);
@@ -203,10 +222,24 @@ export default function BounceCards({
     }
     clearActivateTimer();
 
-    // Only reset if this card was the one that actually activated
     if (activeIdxRef.current === idx) {
       resetToBase();
     }
+  };
+
+  const onCardTap = (idx: number) => {
+    if (!enableHover) return;
+    // Desktop mouse uses settle-to-hover; tap toggle is for touch
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      return;
+    }
+    if (activeIdxRef.current === idx) {
+      resetToBase();
+      return;
+    }
+    clearActivateTimer();
+    pendingIdxRef.current = idx;
+    applyHoverState(idx);
   };
 
   return (
@@ -229,6 +262,7 @@ export default function BounceCards({
           }}
           onMouseEnter={() => onCardEnter(idx)}
           onMouseLeave={() => onCardLeave(idx)}
+          onClick={() => onCardTap(idx)}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="image" src={src} alt={captions[idx] ?? `Memory ${idx + 1}`} />
@@ -239,4 +273,38 @@ export default function BounceCards({
       ))}
     </div>
   );
+}
+
+export type GalleryLayout = "mobile" | "laptop" | "desktop";
+
+export function useGalleryLayout(
+  mobileMax = 760,
+  desktopMin = 1600,
+): GalleryLayout {
+  const [layout, setLayout] = useState<GalleryLayout>("desktop");
+
+  useEffect(() => {
+    const mobileMq = window.matchMedia(`(max-width: ${mobileMax}px)`);
+    const desktopMq = window.matchMedia(`(min-width: ${desktopMin}px)`);
+
+    const sync = () => {
+      if (mobileMq.matches) {
+        setLayout("mobile");
+      } else if (desktopMq.matches) {
+        setLayout("desktop");
+      } else {
+        setLayout("laptop");
+      }
+    };
+
+    sync();
+    mobileMq.addEventListener("change", sync);
+    desktopMq.addEventListener("change", sync);
+    return () => {
+      mobileMq.removeEventListener("change", sync);
+      desktopMq.removeEventListener("change", sync);
+    };
+  }, [mobileMax, desktopMin]);
+
+  return layout;
 }

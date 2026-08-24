@@ -1,7 +1,7 @@
 "use client";
 
 import { PageShell } from "../PageShell";
-import BounceCards from "./BounceCards";
+import BounceCards, { useGalleryLayout } from "./BounceCards";
 
 const GALLERY_IMAGES = [
   "/gallery/party-cat.webp",
@@ -39,26 +39,89 @@ const GALLERY_CAPTIONS = [
   "Tiny cheers",
 ];
 
-/* 3×5 with random tilts + wider gaps so cards don't stack */
-const TRANSFORM_STYLES = [
-  "rotate(-16deg) translate(-780px, -270px)",
-  "rotate(11deg) translate(-390px, -300px)",
-  "rotate(-7deg) translate(10px, -255px)",
-  "rotate(14deg) translate(400px, -285px)",
-  "rotate(-12deg) translate(780px, -260px)",
-  "rotate(9deg) translate(-760px, 5px)",
-  "rotate(-18deg) translate(-380px, 30px)",
-  "rotate(5deg) translate(15px, -20px)",
-  "rotate(-11deg) translate(395px, 25px)",
-  "rotate(15deg) translate(770px, -10px)",
-  "rotate(-13deg) translate(-785px, 275px)",
-  "rotate(8deg) translate(-385px, 295px)",
-  "rotate(-6deg) translate(5px, 265px)",
-  "rotate(17deg) translate(390px, 290px)",
-  "rotate(-10deg) translate(775px, 270px)",
+/* Positions kept inside design canvas (1900×920) with rotation margin */
+const DESKTOP_TRANSFORMS = [
+  "rotate(-14deg) translate(-600px, -210px)",
+  "rotate(10deg) translate(-300px, -228px)",
+  "rotate(-6deg) translate(0px, -200px)",
+  "rotate(12deg) translate(300px, -222px)",
+  "rotate(-10deg) translate(600px, -205px)",
+  "rotate(8deg) translate(-595px, 0px)",
+  "rotate(-15deg) translate(-298px, 12px)",
+  "rotate(4deg) translate(0px, -8px)",
+  "rotate(-9deg) translate(298px, 10px)",
+  "rotate(13deg) translate(595px, -4px)",
+  "rotate(-11deg) translate(-600px, 210px)",
+  "rotate(7deg) translate(-300px, 225px)",
+  "rotate(-5deg) translate(0px, 200px)",
+  "rotate(14deg) translate(300px, 218px)",
+  "rotate(-8deg) translate(598px, 208px)",
 ];
 
+const LAPTOP_TRANSFORMS = [
+  "rotate(-14deg) translate(-450px, -175px)",
+  "rotate(10deg) translate(-225px, -190px)",
+  "rotate(-6deg) translate(0px, -168px)",
+  "rotate(12deg) translate(225px, -185px)",
+  "rotate(-10deg) translate(450px, -170px)",
+  "rotate(8deg) translate(-448px, 0px)",
+  "rotate(-15deg) translate(-222px, 10px)",
+  "rotate(4deg) translate(0px, -6px)",
+  "rotate(-9deg) translate(222px, 8px)",
+  "rotate(13deg) translate(448px, -3px)",
+  "rotate(-11deg) translate(-450px, 175px)",
+  "rotate(7deg) translate(-225px, 188px)",
+  "rotate(-5deg) translate(0px, 168px)",
+  "rotate(14deg) translate(225px, 182px)",
+  "rotate(-8deg) translate(448px, 172px)",
+];
+
+const MOBILE_TRANSFORMS = [
+  "rotate(-12deg) translate(-102px, -168px)",
+  "rotate(8deg) translate(0px, -178px)",
+  "rotate(-6deg) translate(102px, -165px)",
+  "rotate(10deg) translate(-102px, -82px)",
+  "rotate(-12deg) translate(0px, -78px)",
+  "rotate(7deg) translate(102px, -85px)",
+  "rotate(-9deg) translate(-102px, 0px)",
+  "rotate(5deg) translate(0px, 4px)",
+  "rotate(-10deg) translate(102px, 0px)",
+  "rotate(11deg) translate(-102px, 82px)",
+  "rotate(-7deg) translate(0px, 86px)",
+  "rotate(9deg) translate(102px, 80px)",
+  "rotate(-13deg) translate(-102px, 165px)",
+  "rotate(6deg) translate(0px, 170px)",
+  "rotate(-8deg) translate(102px, 163px)",
+];
+
+const LAYOUT_CONFIG = {
+  mobile: {
+    className: " is-mobile",
+    containerWidth: 360,
+    containerHeight: 560,
+    transformStyles: MOBILE_TRANSFORMS,
+    hoverPushOffset: 55,
+  },
+  laptop: {
+    className: " is-laptop",
+    containerWidth: 1320,
+    containerHeight: 720,
+    transformStyles: LAPTOP_TRANSFORMS,
+    hoverPushOffset: 120,
+  },
+  desktop: {
+    className: "",
+    containerWidth: 1900,
+    containerHeight: 920,
+    transformStyles: DESKTOP_TRANSFORMS,
+    hoverPushOffset: 160,
+  },
+} as const;
+
 export default function GalleryPage() {
+  const layout = useGalleryLayout();
+  const config = LAYOUT_CONFIG[layout];
+
   return (
     <PageShell variant="gallery">
       <section className="content-section gallery-page">
@@ -82,17 +145,17 @@ export default function GalleryPage() {
           </span>
 
           <BounceCards
-            className="gallery-bounceCards"
+            className={`gallery-bounceCards${config.className}`}
             images={GALLERY_IMAGES}
             captions={GALLERY_CAPTIONS}
-            containerWidth={1900}
-            containerHeight={920}
+            containerWidth={config.containerWidth}
+            containerHeight={config.containerHeight}
             animationDelay={0.15}
             animationStagger={0.04}
             easeType="power2.out"
-            transformStyles={TRANSFORM_STYLES}
+            transformStyles={config.transformStyles}
             enableHover
-            hoverPushOffset={220}
+            hoverPushOffset={config.hoverPushOffset}
           />
         </div>
       </section>
