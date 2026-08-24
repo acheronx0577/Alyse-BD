@@ -3,7 +3,7 @@ import { PageShell } from "../PageShell";
 
 export default function MessagesPage() {
   return (
-    <PageShell>
+    <PageShell variant="messages">
       <MessagesSection />
     </PageShell>
   );

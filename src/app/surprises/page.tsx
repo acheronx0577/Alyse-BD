@@ -3,7 +3,7 @@ import { SurprisesSection } from "../SurprisesSection";
 
 export default function SurprisesPage() {
   return (
-    <PageShell>
+    <PageShell variant="surprises">
       <SurprisesSection />
     </PageShell>
   );

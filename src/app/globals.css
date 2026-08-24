@@ -39,6 +39,14 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 body {
@@ -50,6 +58,14 @@ body {
     var(--bg);
   font-family: "Comic Sans MS", "Trebuchet MS", ui-rounded, system-ui, sans-serif;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 a {
@@ -107,6 +123,7 @@ a {
 }
 
 .nav-group a {
+  position: relative;
   transition: transform 0.18s ease, color 0.18s ease;
 }
 
@@ -117,8 +134,21 @@ a {
 
 .nav-group a.active {
   color: var(--pink-strong);
-  text-decoration: underline wavy var(--pink-soft);
-  text-underline-offset: 6px;
+  text-decoration: none;
+}
+
+.nav-group a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 9px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 9'%3E%3Cpath d='M0 4.5 Q8 1.5 16 4.5 T32 4.5' fill='none' stroke='%23ff9aab' stroke-width='2.75' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 32px 9px;
+  background-position: left bottom;
 }
 
 .brand {
@@ -386,6 +416,27 @@ button.btn {
   font-weight: 800;
 }
 
+/* Site-wide TextLoop curtain — wavy ribbon */
+.site-curtain {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.site-curtain-loop.text-loop {
+  max-height: clamp(82px, 10vh, 120px);
+}
+
+.site-curtain-loop .text-loop-svg {
+  display: block;
+  width: 100%;
+  max-height: clamp(82px, 10vh, 120px);
+  height: auto;
+}
+
 /* GALLERY — BounceCards scrapbook */
 .gallery-bounce-wrap {
   position: relative;
@@ -487,7 +538,7 @@ button.btn {
   transform: rotate(6deg);
 }
 
-/* GALLERY — single-screen fit */
+/* GALLERY — single-screen fit, no scroll */
 .page-fit {
   height: 100dvh;
   max-height: 100dvh;
@@ -518,11 +569,12 @@ button.btn {
   max-width: none;
 }
 
-.page-fit .party-art-fallback {
+.page-gallery .party-art-fallback {
   height: clamp(56px, 7vh, 96px);
 }
 
-.page-fit .gallery-page {
+.page-fit .gallery-page,
+.page-gallery .gallery-page {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
@@ -548,21 +600,87 @@ button.btn {
 }
 
 /* MESSAGES */
+.messages-section {
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-md);
+}
+
+.messages-section .section-intro {
+  margin-bottom: var(--space-sm);
+}
+
+.messages-section .section-intro h1 {
+  font-size: clamp(1.6rem, 1.2rem + 1.45vw, 2.45rem);
+}
+
+.messages-section .section-intro p {
+  margin-top: var(--space-2xs);
+}
+
+.page-messages .messages-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-md);
+}
+
+/* Keep the normal nav proportions on the messages page */
+.page-messages.page-fit .nav {
+  min-height: clamp(120px, 10vw + 80px, 190px);
+  padding: var(--space-md) 0;
+}
+
+.page-messages.page-fit .brand {
+  width: var(--brand-size);
+}
+
+.page-messages.page-fit .page-main {
+  width: calc(100% - clamp(2rem, 7vw, 6rem) * 2);
+  max-width: clamp(720px, 68vw, 1060px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+}
+
+.page-messages .messages-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.7fr);
+  gap: clamp(1.25rem, 2.2vw, 2.25rem);
+  max-width: 100%;
+}
+
+.page-messages .message-feed {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page-messages .message-feed::-webkit-scrollbar {
+  display: none;
+}
+
+.page-messages .compose-box textarea {
+  min-height: clamp(5rem, 10vh, 7rem);
+}
+
 .messages-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
-  gap: var(--space-lg);
+  gap: var(--space-md);
   align-items: start;
 }
 
 .message-feed {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 }
 
 .message-card {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-sm);
   background: white;
   border: 2px solid rgba(255, 128, 147, 0.18);
@@ -598,7 +716,7 @@ button.btn {
 }
 
 .compose-box {
-  padding: var(--space-lg);
+  padding: var(--space-md);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.85);
   border: 3px dashed var(--pink-soft);
@@ -659,6 +777,60 @@ button.btn {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md);
+}
+
+/* SURPRISES — single-screen fit */
+.page-surprises .surprises-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-sm);
+}
+
+.page-surprises.page-fit .nav {
+  min-height: clamp(120px, 10vw + 80px, 190px);
+  padding: var(--space-md) 0;
+}
+
+.page-surprises.page-fit .brand {
+  width: var(--brand-size);
+}
+
+.page-surprises.page-fit .page-main {
+  width: calc(100% - clamp(2rem, 7vw, 6rem) * 2);
+  max-width: clamp(720px, 72vw, 1120px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+}
+
+.page-surprises .section-intro {
+  margin-bottom: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.page-surprises .surprise-grid {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  align-content: start;
+  justify-items: center;
+}
+
+.page-surprises .surprise-tile {
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: min(100%, 26vh);
+  height: auto;
+  min-height: 0;
+  padding: var(--space-sm);
+}
+
+.page-surprises .surprise-tile .icon {
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem);
 }
 
 .surprise-tile {
@@ -991,6 +1163,17 @@ button.btn {
   .messages-layout,
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .page-messages.page-fit .page-main {
+    width: calc(100% - clamp(1.25rem, 5vw, 2rem) * 2);
+    max-width: none;
+    padding-inline: clamp(1rem, 4vw, 1.75rem);
+  }
+
+  .page-messages .messages-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
 
   .gallery-note-left {

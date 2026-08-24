@@ -59,7 +59,7 @@ export function MessagesSection() {
   }
 
   return (
-    <section className="content-section">
+    <section className="content-section messages-section">
       <div className="section-intro">
         <h1>Birthday Messages 💌</h1>
         <p>Leave a note for Alyse — confetti included!</p>

@@ -81,7 +81,7 @@ export function SurprisesSection() {
   const active = activeSurprise !== null ? SURPRISES[activeSurprise] : null;
 
   return (
-    <section className="content-section">
+    <section className="content-section surprises-section">
       <div className="section-intro">
         <h1>Surprises for Alyse 🎁</h1>
         <p>Tap a gift to reveal something special!</p>
