@@ -3,17 +3,13 @@
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { ReactNode, useMemo } from "react";
 
-const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
+const convexUrl =
+  process.env.NEXT_PUBLIC_CONVEX_URL || "https://pleasant-cod-849.convex.cloud";
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
   const client = useMemo(() => {
-    if (!convexUrl) return null;
     return new ConvexReactClient(convexUrl);
   }, []);
-
-  if (!client) {
-    return <>{children}</>;
-  }
 
   return <ConvexProvider client={client}>{children}</ConvexProvider>;
 }
