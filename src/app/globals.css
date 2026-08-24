@@ -443,7 +443,7 @@ button.btn {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   container-type: size;
   container-name: gallery-bounce;
 }
@@ -569,6 +569,11 @@ button.btn {
   max-width: none;
 }
 
+.page-gallery.page-fit .page-main {
+  overflow: visible;
+  z-index: 10;
+}
+
 .page-fit .gallery-page,
 .page-gallery .gallery-page {
   flex: 1 1 auto;
@@ -577,13 +582,16 @@ button.btn {
   flex-direction: column;
   justify-content: flex-start;
   padding: var(--space-xs) 0 var(--space-sm);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .gallery-page .section-intro {
   margin-top: 0;
   margin-bottom: var(--space-sm);
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .gallery-page .section-intro h1 {
@@ -1350,7 +1358,7 @@ button.btn {
 
   .gallery-bounce-wrap {
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .gallery-bounceCards.bounceCardsContainer.is-mobile {

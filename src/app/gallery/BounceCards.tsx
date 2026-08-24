@@ -154,7 +154,7 @@ export default function BounceCards({
       if (i === hoveredIdx) {
         gsap.to(target, {
           transform: `${baseTransform} scale(1.05)`,
-          zIndex: 50,
+          zIndex: 100,
           pointerEvents: "auto",
           duration: 0.35,
           ease: "power2.out",
