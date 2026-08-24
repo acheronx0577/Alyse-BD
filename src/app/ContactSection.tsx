@@ -1,9 +1,13 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { submitContact } from "./actions/contact";
+import { useAction } from "convex/react";
+import { FormEvent, useRef, useState } from "react";
+import { api } from "../../convex/_generated/api";
+import { TurnstileField, type TurnstileFieldHandle } from "./TurnstileField";
 
 export function ContactSection() {
+  const submitContact = useAction(api.contact.submit);
+  const turnstileRef = useRef<TurnstileFieldHandle>(null);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -15,17 +19,27 @@ export function ContactSection() {
     setSubmitting(true);
 
     const form = event.currentTarget;
+    const formData = new FormData(form);
 
     try {
-      const result = await submitContact(new FormData(form));
+      const result = await submitContact({
+        name: formData.get("name")?.toString() ?? "",
+        email: formData.get("email")?.toString() ?? "",
+        message: formData.get("message")?.toString() ?? "",
+        turnstileToken: turnstileRef.current?.getToken(),
+      });
+
       if (result.ok) {
         setSent(true);
         form.reset();
+        turnstileRef.current?.reset();
       } else {
         setError(result.error);
+        turnstileRef.current?.reset();
       }
     } catch {
       setError("Something went wrong. Please try again.");
+      turnstileRef.current?.reset();
     } finally {
       setSubmitting(false);
     }
@@ -41,7 +55,14 @@ export function ContactSection() {
       <div className="contact-grid">
         <form className="contact-form" onSubmit={handleSubmit}>
           <label htmlFor="contact-name">Your name</label>
-          <input id="contact-name" name="name" type="text" placeholder="Friend of Alyse" required />
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            placeholder="Friend of Alyse"
+            maxLength={80}
+            required
+          />
 
           <label htmlFor="contact-email">Email</label>
           <input
@@ -49,6 +70,7 @@ export function ContactSection() {
             name="email"
             type="email"
             placeholder="you@example.com"
+            maxLength={254}
             required
           />
 
@@ -58,8 +80,11 @@ export function ContactSection() {
             name="message"
             rows={4}
             placeholder="Party details, gift ideas, or just hi!"
+            maxLength={2000}
             required
           />
+
+          <TurnstileField ref={turnstileRef} />
 
           <button className="btn primary compact" type="submit" disabled={submitting}>
             {submitting ? "Sending…" : "Send message 🎀"}

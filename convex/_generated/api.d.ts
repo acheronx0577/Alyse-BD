@@ -8,7 +8,11 @@
  * @module
  */
 
+import type * as botVerification from "../botVerification.js";
+import type * as contact from "../contact.js";
 import type * as health from "../health.js";
+import type * as messages from "../messages.js";
+import type * as rateLimit from "../rateLimit.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +21,11 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  botVerification: typeof botVerification;
+  contact: typeof contact;
   health: typeof health;
+  messages: typeof messages;
+  rateLimit: typeof rateLimit;
 }>;
 
 /**

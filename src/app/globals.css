@@ -728,6 +728,24 @@ button.btn {
   margin-bottom: var(--space-sm);
 }
 
+.compose-box input {
+  width: 100%;
+  margin-bottom: var(--space-xs);
+  border: 2px solid var(--pink-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-md);
+  font-family: inherit;
+  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+  background: white;
+  color: var(--ink);
+}
+
+.compose-box input:focus,
+.compose-box textarea:focus {
+  outline: 2px solid rgba(255, 116, 140, 0.35);
+  outline-offset: 2px;
+}
+
 .compose-box textarea {
   width: 100%;
   min-height: clamp(6rem, 5rem + 2vw, 8.5rem);
@@ -739,11 +757,6 @@ button.btn {
   resize: vertical;
   background: white;
   color: var(--ink);
-}
-
-.compose-box textarea:focus {
-  outline: 2px solid rgba(255, 116, 140, 0.35);
-  outline-offset: 2px;
 }
 
 .sticker-row {
