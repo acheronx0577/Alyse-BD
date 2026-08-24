@@ -10,10 +10,10 @@ export function PageShell({
 }) {
   return (
     <main
-      className={`page${variant === "home" ? " page-home" : ""}${variant === "gallery" ? " page-fit page-gallery" : ""}${variant === "messages" ? " page-fit page-messages" : ""}${variant === "surprises" ? " page-fit page-surprises" : ""}`}
+      className={`page${variant === "home" ? " page-fit page-home" : ""}${variant === "gallery" ? " page-fit page-gallery" : ""}${variant === "messages" ? " page-fit page-messages" : ""}${variant === "surprises" ? " page-fit page-surprises" : ""}`}
     >
       <SiteNav />
-      {(variant === "messages" || variant === "surprises") && <SiteCurtain />}
+      <SiteCurtain />
       <div className="page-main">{children}</div>
       <div
         className="party-art party-art-fallback"

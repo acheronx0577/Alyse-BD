@@ -599,6 +599,64 @@ button.btn {
   margin-top: var(--space-2xs);
 }
 
+/* HOME — single-screen fit, no scroll */
+.page-home.page-fit {
+  padding-bottom: 0;
+}
+
+.page-home.page-fit .nav {
+  min-height: clamp(100px, 8vw + 60px, 160px);
+  padding: var(--space-sm) 0;
+}
+
+.page-home.page-fit .brand {
+  width: var(--brand-size);
+}
+
+.page-home.page-fit .page-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.page-home.page-fit .hero {
+  margin: clamp(0.25rem, 1.2vh, 1.25rem) auto 0;
+  padding: 0 var(--page-gutter) var(--space-sm);
+  max-width: var(--hero-max);
+}
+
+.page-home.page-fit .hero h1 {
+  font-size: clamp(2.35rem, 1.6rem + 3.2vw, 4.8rem);
+}
+
+.page-home.page-fit .subtitle {
+  margin: var(--space-xs) auto 0;
+  font-size: clamp(1rem, 0.85rem + 0.6vw, 1.45rem);
+  max-width: 52ch;
+}
+
+.page-home.page-fit .actions {
+  margin-top: var(--space-md);
+  gap: var(--space-md);
+}
+
+.page-home.page-fit .btn {
+  min-width: clamp(13rem, 24vw, 20rem);
+  min-height: clamp(3.4rem, 2.5rem + 2vw, 4.8rem);
+  font-size: clamp(1.1rem, 0.95rem + 0.5vw, 1.5rem);
+}
+
+.page-home.page-fit .heart.h1 { left: 10%; top: calc(100% + clamp(12px, 2.5vh, 28px)); }
+.page-home.page-fit .heart.h2 { left: 32%; top: calc(100% + clamp(22px, 4vh, 40px)); }
+.page-home.page-fit .heart.h3 { left: 50%; top: calc(100% + clamp(14px, 2.8vh, 32px)); }
+.page-home.page-fit .heart.h4 { right: 28%; top: calc(100% + clamp(24px, 4.2vh, 42px)); }
+.page-home.page-fit .heart.h5 { right: 12%; top: calc(100% + clamp(12px, 2.5vh, 28px)); }
+
 /* MESSAGES */
 .messages-section {
   padding-top: var(--space-sm);
@@ -1226,6 +1284,42 @@ button.btn {
   .hero {
     margin-top: var(--space-md);
     padding-inline: var(--space-sm);
+  }
+
+  .page-home.page-fit .nav {
+    min-height: auto;
+    padding: var(--space-2xs) 0;
+  }
+
+  .page-home.page-fit .hero {
+    margin: 0 auto 0;
+    padding: var(--space-2xs) var(--space-sm) var(--space-xs);
+  }
+
+  .page-home.page-fit .hero h1 {
+    font-size: clamp(1.85rem, 1.45rem + 2vw, 2.6rem);
+  }
+
+  .page-home.page-fit .subtitle {
+    margin-top: var(--space-2xs);
+    font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem);
+  }
+
+  .page-home.page-fit .actions {
+    margin-top: var(--space-xs);
+    gap: var(--space-xs);
+  }
+
+  .page-home.page-fit .btn {
+    width: 100%;
+    min-width: 0;
+    min-height: clamp(2.8rem, 6vh, 3.4rem);
+    padding: var(--space-xs) var(--space-md);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.1rem);
+  }
+
+  .page-home.page-fit .heart {
+    display: none;
   }
 
   .actions {
