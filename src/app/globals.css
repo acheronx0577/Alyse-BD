@@ -1058,6 +1058,34 @@ button.btn {
   margin-inline: auto;
 }
 
+/* CONTACT — single-screen fit, no scroll */
+.page-contact.page-fit {
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.page-contact.page-fit .nav {
+  min-height: clamp(100px, 8vw + 60px, 160px);
+  padding: var(--space-sm) 0;
+}
+
+.page-contact.page-fit .brand {
+  width: var(--brand-size);
+}
+
+.page-contact.page-fit .page-main {
+  width: calc(100% - clamp(2rem, 7vw, 6rem) * 2);
+  max-width: clamp(720px, 68vw, 1060px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+  overflow: hidden;
+}
+
+.page-contact .content-section {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+
 .contact-success {
   margin: var(--space-sm) 0 0;
   font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
@@ -1240,13 +1268,15 @@ button.btn {
     grid-template-columns: 1fr;
   }
 
-  .page-messages.page-fit .page-main {
+  .page-messages.page-fit .page-main,
+  .page-contact.page-fit .page-main {
     width: calc(100% - clamp(1.25rem, 5vw, 2rem) * 2);
     max-width: none;
     padding-inline: clamp(1rem, 4vw, 1.75rem);
   }
 
-  .page-messages .messages-layout {
+  .page-messages .messages-layout,
+  .page-contact .contact-grid {
     grid-template-columns: 1fr;
     gap: var(--space-md);
   }

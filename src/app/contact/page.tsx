@@ -3,7 +3,7 @@ import { PageShell } from "../PageShell";
 
 export default function ContactPage() {
   return (
-    <PageShell>
+    <PageShell variant="contact">
       <ContactSection />
     </PageShell>
   );
