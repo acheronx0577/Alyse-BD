@@ -9,7 +9,7 @@ const ABOUT_PILLS = [
 
 export default function AboutPage() {
   return (
-    <PageShell>
+    <PageShell variant="about">
       <section className="content-section">
         <div className="about-grid">
           <div className="about-photo" aria-hidden="true">

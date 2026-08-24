@@ -6,11 +6,11 @@ export function PageShell({
   variant = "content",
 }: {
   children: React.ReactNode;
-  variant?: "home" | "content" | "gallery" | "messages" | "surprises" | "contact";
+  variant?: "home" | "content" | "gallery" | "messages" | "surprises" | "contact" | "about";
 }) {
   return (
     <main
-      className={`page${variant === "home" ? " page-fit page-home" : ""}${variant === "gallery" ? " page-fit page-gallery" : ""}${variant === "messages" ? " page-fit page-messages" : ""}${variant === "surprises" ? " page-fit page-surprises" : ""}${variant === "contact" ? " page-fit page-contact" : ""}`}
+      className={`page${variant === "home" ? " page-fit page-home" : ""}${variant === "gallery" ? " page-fit page-gallery" : ""}${variant === "messages" ? " page-fit page-messages" : ""}${variant === "surprises" ? " page-fit page-surprises" : ""}${variant === "contact" ? " page-fit page-contact" : ""}${variant === "about" ? " page-fit page-about" : ""}`}
     >
       <SiteNav />
       <SiteCurtain />

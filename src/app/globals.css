@@ -416,6 +416,48 @@ button.btn {
   font-weight: 800;
 }
 
+/* ABOUT — single-screen fit, no scroll */
+.page-about.page-fit {
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.page-about.page-fit .nav {
+  min-height: clamp(100px, 8vw + 60px, 160px);
+  padding: var(--space-sm) 0;
+}
+
+.page-about.page-fit .brand {
+  width: var(--brand-size);
+}
+
+.page-about.page-fit .page-main {
+  width: min(var(--content-max), calc(100% - var(--page-gutter) * 2));
+  margin-inline: auto;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.page-about .content-section {
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+
+.page-about .about-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.1fr);
+  gap: var(--space-xl);
+  align-items: center;
+  width: 100%;
+}
+
+.page-about .about-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  margin: 0;
+}
+
 /* Site-wide TextLoop curtain — wavy ribbon */
 .site-curtain {
   position: relative;
