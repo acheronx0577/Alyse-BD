@@ -569,10 +569,6 @@ button.btn {
   max-width: none;
 }
 
-.page-gallery .party-art-fallback {
-  height: clamp(56px, 7vh, 96px);
-}
-
 .page-fit .gallery-page,
 .page-gallery .gallery-page {
   flex: 1 1 auto;
