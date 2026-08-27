@@ -7,7 +7,7 @@ import { useMotion } from "@/app/motion/motion-context";
 import { shouldRunHomeIntro, markHomeIntroCompleted } from "@/lib/motion/home-intro";
 import { primeTransitionOverlays } from "@/lib/motion/transition-gsap";
 
-const ANIMATION_DURATION_MS = 3000;
+const ANIMATION_DURATION_MS = 5000;
 
 function customEasing(t: number): number {
   if (t < 0.25) {

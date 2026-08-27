@@ -1727,7 +1727,7 @@ button.btn {
     transparent 18px,
     transparent 36px
   );
-  animation: loadingStripeMove 3s ease-in-out forwards;
+  animation: loadingStripeMove 5s ease-in-out forwards;
   border-radius: inherit;
   z-index: 1;
 }
@@ -1748,7 +1748,7 @@ button.btn {
   );
   background-size: 200% 100%;
   z-index: 0;
-  animation: loadingBarProgress 3s ease-in-out forwards;
+  animation: loadingBarProgress 5s ease-in-out forwards;
   border-radius: inherit;
   transform: translateX(-98%);
 }
