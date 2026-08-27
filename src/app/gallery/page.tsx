@@ -42,31 +42,31 @@ const GALLERY_CARD_SIZES: CardSizeVariant[] = [
   "large",     // Coast View 🌊 (4:3 large)
 ];
 
-/* Coordinates kept well inside design canvas */
+/* Coordinates spread out widely and gracefully across design canvas */
 const DESKTOP_TRANSFORMS = [
-  "rotate(-10deg) translate(-540px, -190px)",
-  "rotate(7deg) translate(-180px, -200px)",
-  "rotate(-4deg) translate(180px, -185px)",
-  "rotate(10deg) translate(540px, -175px)",
-  "rotate(5deg) translate(-320px, 35px)",   /* Magic Hour - Centerpiece */
-  "rotate(-8deg) translate(340px, 35px)",   /* Golden Sun */
-  "rotate(12deg) translate(0px, 15px)",
-  "rotate(-7deg) translate(-480px, 230px)",
-  "rotate(8deg) translate(-70px, 240px)",
-  "rotate(-10deg) translate(400px, 235px)",
+  "rotate(-12deg) translate(-750px, -170px)",
+  "rotate(6deg) translate(-250px, -185px)",
+  "rotate(-5deg) translate(250px, -175px)",
+  "rotate(11deg) translate(750px, -165px)",
+  "rotate(4deg) translate(-480px, 20px)",    /* Magic Hour - Centerpiece */
+  "rotate(-7deg) translate(480px, 20px)",    /* Golden Sun */
+  "rotate(10deg) translate(0px, 15px)",
+  "rotate(-8deg) translate(-620px, 210px)",
+  "rotate(7deg) translate(-90px, 220px)",
+  "rotate(-9deg) translate(560px, 215px)",
 ];
 
 const LAPTOP_TRANSFORMS = [
-  "rotate(-10deg) translate(-410px, -150px)",
-  "rotate(7deg) translate(-140px, -160px)",
-  "rotate(-4deg) translate(140px, -145px)",
-  "rotate(10deg) translate(410px, -140px)",
-  "rotate(5deg) translate(-250px, 25px)",    /* Magic Hour */
-  "rotate(-8deg) translate(270px, 25px)",    /* Golden Sun */
-  "rotate(12deg) translate(0px, 10px)",
-  "rotate(-7deg) translate(-370px, 180px)",
-  "rotate(8deg) translate(-55px, 190px)",
-  "rotate(-10deg) translate(310px, 185px)",
+  "rotate(-12deg) translate(-570px, -145px)",
+  "rotate(6deg) translate(-190px, -155px)",
+  "rotate(-5deg) translate(190px, -145px)",
+  "rotate(11deg) translate(570px, -135px)",
+  "rotate(4deg) translate(-365px, 15px)",    /* Magic Hour */
+  "rotate(-7deg) translate(365px, 15px)",    /* Golden Sun */
+  "rotate(10deg) translate(0px, 10px)",
+  "rotate(-8deg) translate(-470px, 165px)",
+  "rotate(7deg) translate(-70px, 175px)",
+  "rotate(-9deg) translate(425px, 170px)",
 ];
 
 const MOBILE_TRANSFORMS = [
@@ -92,17 +92,17 @@ const LAYOUT_CONFIG = {
   },
   laptop: {
     className: " is-laptop",
-    containerWidth: 1320,
-    containerHeight: 720,
+    containerWidth: 1380,
+    containerHeight: 550,
     transformStyles: LAPTOP_TRANSFORMS,
-    hoverPushOffset: 120,
+    hoverPushOffset: 150,
   },
   desktop: {
     className: "",
-    containerWidth: 1900,
-    containerHeight: 920,
+    containerWidth: 1800,
+    containerHeight: 620,
     transformStyles: DESKTOP_TRANSFORMS,
-    hoverPushOffset: 160,
+    hoverPushOffset: 190,
   },
 } as const;
 
