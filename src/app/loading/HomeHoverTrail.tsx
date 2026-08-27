@@ -3,22 +3,20 @@
 import { useEffect, useRef } from "react";
 
 const TRAIL_IMAGES = [
-  "/gallery/spotlight-1.jpg",
-  "/gallery/spotlight-2.jpg",
-  "/gallery/spotlight-3.jpg",
-  "/gallery/spotlight-4.jpg",
-  "/gallery/spotlight-5.jpg",
-  "/gallery/spotlight-6.jpg",
-  "/gallery/spotlight-7.jpg",
-  "/gallery/spotlight-8.jpg",
-  "/gallery/spotlight-9.jpg",
-  "/gallery/spotlight-10.jpg",
-  "/gallery/spotlight-11.jpg",
-  "/gallery/spotlight-12.jpg",
-  "/gallery/spotlight-13.jpg",
-  "/gallery/spotlight-14.jpg",
-  "/gallery/party-cat.webp",
-  "/gallery/IMG_20230816_135126_135.webp",
+  "/assets/blue1.png",
+  "/assets/pink2.png",
+  "/assets/yellow3.png",
+  "/assets/pinkwhite4.png",
+  "/assets/blue5.png",
+  "/assets/yellow6.png",
+  "/assets/kitty7.png",
+  "/assets/blue8.png",
+  "/assets/kitty9.png",
+  "/assets/white10.png",
+  "/assets/white11.png",
+  "/assets/black12.png",
+  "/assets/yellow12.png",
+  "/assets/party-cat-hover.webp",
 ];
 
 const TRAIL_CONFIG = {
