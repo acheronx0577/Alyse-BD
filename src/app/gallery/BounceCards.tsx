@@ -47,6 +47,35 @@ export default function BounceCards({
   const transformStylesRef = useRef(transformStyles);
   transformStylesRef.current = transformStyles;
 
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const parent = containerRef.current.parentElement;
+    if (!parent) return;
+
+    const updateScale = () => {
+      const parentWidth = parent.clientWidth;
+      const parentHeight = parent.clientHeight;
+      if (!parentWidth || !parentHeight) return;
+
+      const scaleX = parentWidth / containerWidth;
+      const scaleY = parentHeight / containerHeight;
+      const fitScale = Math.min(1, scaleX, scaleY);
+      setScale(Math.max(0.3, fitScale));
+    };
+
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(parent);
+    window.addEventListener("resize", updateScale);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateScale);
+    };
+  }, [containerWidth, containerHeight]);
+
   useEffect(() => {
     const styles = transformStylesRef.current;
     const mm = gsap.matchMedia();
@@ -153,8 +182,8 @@ export default function BounceCards({
 
       if (i === hoveredIdx) {
         gsap.to(target, {
-          transform: `${baseTransform} scale(1.05)`,
-          zIndex: 100,
+          transform: `${baseTransform} scale(1.08)`,
+          zIndex: 9999,
           pointerEvents: "auto",
           duration: 0.35,
           ease: "power2.out",
@@ -165,12 +194,12 @@ export default function BounceCards({
         const dirX = i < hoveredIdx ? -1 : 1;
         const mid = (images.length - 1) / 2;
         const dirY = i < mid ? -1 : 1;
-        const offsetX = dirX * (hoverPushOffset + distance * 24);
-        const offsetY = dirY * (50 + distance * 10);
+        const offsetX = dirX * (hoverPushOffset + distance * 6);
+        const offsetY = dirY * (16 + distance * 4);
 
         gsap.to(target, {
           transform: getPushedTransform(baseTransform, offsetX, offsetY),
-          zIndex: 1,
+          zIndex: i + 1,
           pointerEvents: "none",
           duration: 0.35,
           ease: "power2.out",
@@ -250,6 +279,9 @@ export default function BounceCards({
         position: "relative",
         width: containerWidth,
         height: containerHeight,
+        transform: `scale(${scale})`,
+        transformOrigin: "center center",
+        flexShrink: 0,
       }}
     >
       {images.map((src, idx) => (

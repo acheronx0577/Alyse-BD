@@ -485,42 +485,16 @@ button.btn {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: visible;
-  container-type: size;
-  container-name: gallery-bounce;
 }
 
-/*
-  Fixed design canvas, then center + scale to fit.
-  translate(-50%, -50%) is required — scale alone leaves the
-  oversized layout box left-aligned when it overflows the wrap.
-*/
 .gallery-bounceCards.bounceCardsContainer {
-  --gallery-design-w: 1900px;
-  --gallery-design-h: 920px;
-  --gallery-fit: min(
-    1,
-    calc(100cqw / var(--gallery-design-w)),
-    calc(100cqh / var(--gallery-design-h))
-  );
-  position: absolute !important;
-  left: 50%;
-  top: 50%;
-  width: var(--gallery-design-w) !important;
-  height: var(--gallery-design-h) !important;
-  margin: 0 !important;
-  transform-origin: center center;
-  transform: translate(-50%, -50%) scale(var(--gallery-fit));
-}
-
-.gallery-bounceCards.bounceCardsContainer.is-laptop {
-  --gallery-design-w: 1320px;
-  --gallery-design-h: 720px;
-}
-
-.gallery-bounceCards.bounceCardsContainer.is-mobile {
-  --gallery-design-w: 360px;
-  --gallery-design-h: 560px;
+  position: relative !important;
+  margin: 0 auto !important;
+  flex-shrink: 0;
 }
 
 @media (min-width: 761px) and (max-width: 1599px) {
@@ -1442,12 +1416,6 @@ button.btn {
 
   .gallery-bounce-wrap {
     width: 100%;
-    overflow: visible;
-  }
-
-  .gallery-bounceCards.bounceCardsContainer.is-mobile {
-    --gallery-design-w: 360px;
-    --gallery-design-h: 560px;
   }
 
   .gallery-bounceCards.bounceCardsContainer .card {

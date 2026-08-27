@@ -4,76 +4,56 @@ import { PageShell } from "../PageShell";
 import BounceCards, { useGalleryLayout } from "./BounceCards";
 
 const GALLERY_IMAGES = [
-  "/gallery/party-cat.webp",
-  "/gallery/spotlight-1.jpg",
-  "/gallery/spotlight-2.jpg",
-  "/gallery/spotlight-3.jpg",
-  "/gallery/spotlight-4.jpg",
-  "/gallery/spotlight-5.jpg",
-  "/gallery/spotlight-6.jpg",
-  "/gallery/spotlight-7.jpg",
-  "/gallery/spotlight-8.jpg",
-  "/gallery/spotlight-9.jpg",
-  "/gallery/spotlight-10.jpg",
-  "/gallery/spotlight-11.jpg",
-  "/gallery/spotlight-12.jpg",
-  "/gallery/spotlight-13.jpg",
-  "/gallery/spotlight-14.jpg",
+  "/gallery/IMG_20230816_135126_135.webp",
+  "/gallery/IMG_20221001_235315_816.jpg",
+  "/gallery/IMG_20221001_232738_123.jpg",
+  "/gallery/Screenshot_20260601_204204_ibisPaint_X.jpg",
+  "/gallery/1769134481_E4FiPYyM.jpg",
+  "/gallery/20221221_172619.jpg",
+  "/gallery/20260621_152450.jpg",
+  "/gallery/20260621_152433.jpg",
+  "/gallery/Screenshot_20260601_230310_ibisPaint_X.jpg",
+  "/gallery/20260621_145719.jpg",
 ];
 
 const GALLERY_CAPTIONS = [
-  "Party cat HQ",
-  "Glow hour",
-  "Balloon day",
-  "Birthday Cake!",
-  "Cupcake crown",
-  "Friends & Fun!",
-  "Spring vibes",
-  "Sparkle squad",
-  "Love notes",
-  "Confetti run",
-  "Soft cuddles",
-  "Pink parade",
-  "Wish night",
-  "Berry sweet",
-  "Tiny cheers",
+  "Subway 💚",
+  "Ocean Drive 🌊",
+  "Palm Beach 🌴",
+  "Sketching ✏️",
+  "Magic Hour ✨",
+  "Golden Sun 🌅",
+  "Blue Sky 🌤️",
+  "Tree Top 🌿",
+  "Art Mode 🎨",
+  "Coast View 🌊",
 ];
 
-/* Positions kept inside design canvas (1900×920) with rotation margin */
+/* Coordinates kept well inside design canvas */
 const DESKTOP_TRANSFORMS = [
-  "rotate(-14deg) translate(-600px, -210px)",
-  "rotate(10deg) translate(-300px, -228px)",
-  "rotate(-6deg) translate(0px, -200px)",
-  "rotate(12deg) translate(300px, -222px)",
-  "rotate(-10deg) translate(600px, -205px)",
-  "rotate(8deg) translate(-595px, 0px)",
-  "rotate(-15deg) translate(-298px, 12px)",
-  "rotate(4deg) translate(0px, -8px)",
-  "rotate(-9deg) translate(298px, 10px)",
-  "rotate(13deg) translate(595px, -4px)",
-  "rotate(-11deg) translate(-600px, 210px)",
-  "rotate(7deg) translate(-300px, 225px)",
-  "rotate(-5deg) translate(0px, 200px)",
-  "rotate(14deg) translate(300px, 218px)",
-  "rotate(-8deg) translate(598px, 208px)",
+  "rotate(-10deg) translate(-540px, -190px)",
+  "rotate(7deg) translate(-180px, -200px)",
+  "rotate(-4deg) translate(180px, -185px)",
+  "rotate(10deg) translate(540px, -175px)",
+  "rotate(5deg) translate(-320px, 35px)",   /* Magic Hour - Centerpiece */
+  "rotate(-8deg) translate(340px, 35px)",   /* Golden Sun */
+  "rotate(12deg) translate(0px, 15px)",
+  "rotate(-7deg) translate(-480px, 230px)",
+  "rotate(8deg) translate(-70px, 240px)",
+  "rotate(-10deg) translate(400px, 235px)",
 ];
 
 const LAPTOP_TRANSFORMS = [
-  "rotate(-14deg) translate(-450px, -175px)",
-  "rotate(10deg) translate(-225px, -190px)",
-  "rotate(-6deg) translate(0px, -168px)",
-  "rotate(12deg) translate(225px, -185px)",
-  "rotate(-10deg) translate(450px, -170px)",
-  "rotate(8deg) translate(-448px, 0px)",
-  "rotate(-15deg) translate(-222px, 10px)",
-  "rotate(4deg) translate(0px, -6px)",
-  "rotate(-9deg) translate(222px, 8px)",
-  "rotate(13deg) translate(448px, -3px)",
-  "rotate(-11deg) translate(-450px, 175px)",
-  "rotate(7deg) translate(-225px, 188px)",
-  "rotate(-5deg) translate(0px, 168px)",
-  "rotate(14deg) translate(225px, 182px)",
-  "rotate(-8deg) translate(448px, 172px)",
+  "rotate(-10deg) translate(-410px, -150px)",
+  "rotate(7deg) translate(-140px, -160px)",
+  "rotate(-4deg) translate(140px, -145px)",
+  "rotate(10deg) translate(410px, -140px)",
+  "rotate(5deg) translate(-250px, 25px)",    /* Magic Hour */
+  "rotate(-8deg) translate(270px, 25px)",    /* Golden Sun */
+  "rotate(12deg) translate(0px, 10px)",
+  "rotate(-7deg) translate(-370px, 180px)",
+  "rotate(8deg) translate(-55px, 190px)",
+  "rotate(-10deg) translate(310px, 185px)",
 ];
 
 const MOBILE_TRANSFORMS = [
@@ -87,11 +67,6 @@ const MOBILE_TRANSFORMS = [
   "rotate(5deg) translate(0px, 4px)",
   "rotate(-10deg) translate(102px, 0px)",
   "rotate(11deg) translate(-102px, 82px)",
-  "rotate(-7deg) translate(0px, 86px)",
-  "rotate(9deg) translate(102px, 80px)",
-  "rotate(-13deg) translate(-102px, 165px)",
-  "rotate(6deg) translate(0px, 170px)",
-  "rotate(-8deg) translate(102px, 163px)",
 ];
 
 const LAYOUT_CONFIG = {
