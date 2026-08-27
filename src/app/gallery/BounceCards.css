@@ -13,8 +13,8 @@
   position: absolute;
   width: clamp(155px, 11vw, 245px);
   aspect-ratio: 3 / 4;
-  border: clamp(10px, 0.85vw, 17px) solid #fff7f0;
-  border-radius: clamp(15px, 1.15vw, 24px);
+  border: clamp(6px, 0.55vw, 10px) solid #fff7f0;
+  border-radius: clamp(12px, 0.9vw, 18px);
   overflow: hidden;
   box-shadow:
     0 12px 30px rgba(73, 53, 39, 0.18),
@@ -119,8 +119,8 @@
 @media (max-width: 700px) {
   .bounceCardsContainer .card {
     width: min(112px, 30vw);
-    border-width: 8px;
-    border-radius: 14px;
+    border-width: 4.5px;
+    border-radius: 10px;
   }
 
   .bounceCardsContainer .card-caption {
