@@ -21,6 +21,78 @@ type BounceCardsProps = {
 /** Pointer must rest on a card this long before clear-out starts */
 const HOVER_ACTIVATE_MS = 220;
 
+function extractDominantColor(img: HTMLImageElement): string | null {
+  try {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return null;
+
+    canvas.width = 32;
+    canvas.height = 32;
+    ctx.drawImage(img, 0, 0, 32, 32);
+
+    const { data } = ctx.getImageData(0, 0, 32, 32);
+    const pixels: Array<{ r: number; g: number; b: number; weight: number }> = [];
+
+    for (let i = 0; i < data.length; i += 4) {
+      const a = data[i + 3];
+      if (a < 128) continue;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const delta = max - min;
+      const l = (max + min) / 2 / 255;
+      const s = delta === 0 ? 0 : delta / (255 * (1 - Math.abs(2 * l - 1)));
+
+      if (l >= 0.12 && l <= 0.95 && s > 0.08) {
+        pixels.push({ r, g, b, weight: s * (1 - Math.abs(l - 0.55)) });
+      }
+    }
+
+    if (pixels.length === 0) {
+      let rSum = 0,
+        gSum = 0,
+        bSum = 0,
+        count = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const a = data[i + 3];
+        if (a < 128) continue;
+        const r = data[i],
+          g = data[i + 1],
+          b = data[i + 2];
+        const l = (r + g + b) / 3 / 255;
+        if (l > 0.08 && l < 0.96) {
+          rSum += r;
+          gSum += g;
+          bSum += b;
+          count++;
+        }
+      }
+      if (count === 0) return null;
+      return `rgb(${Math.round(rSum / count)}, ${Math.round(gSum / count)}, ${Math.round(bSum / count)})`;
+    }
+
+    pixels.sort((a, b) => b.weight - a.weight);
+    const top = pixels.slice(0, Math.max(8, Math.floor(pixels.length * 0.35)));
+    let totalW = 0,
+      rTot = 0,
+      gTot = 0,
+      bTot = 0;
+    for (const p of top) {
+      rTot += p.r * p.weight;
+      gTot += p.g * p.weight;
+      bTot += p.b * p.weight;
+      totalW += p.weight;
+    }
+    return `rgb(${Math.round(rTot / totalW)}, ${Math.round(gTot / totalW)}, ${Math.round(bTot / totalW)})`;
+  } catch {
+    return null;
+  }
+}
+
 export default function BounceCards({
   className = "",
   images = [],
@@ -48,6 +120,26 @@ export default function BounceCards({
   transformStylesRef.current = transformStyles;
 
   const [scale, setScale] = useState(1);
+  const [borderColors, setBorderColors] = useState<Record<number, string>>({});
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  const handleImageLoad = (img: HTMLImageElement, idx: number) => {
+    const col = extractDominantColor(img);
+    if (col) {
+      setBorderColors((prev) => (prev[idx] === col ? prev : { ...prev, [idx]: col }));
+    }
+  };
+
+  useEffect(() => {
+    imgRefs.current.forEach((img, idx) => {
+      if (img && img.complete && img.naturalWidth > 0) {
+        const col = extractDominantColor(img);
+        if (col) {
+          setBorderColors((prev) => (prev[idx] === col ? prev : { ...prev, [idx]: col }));
+        }
+      }
+    });
+  }, [images]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -284,25 +376,47 @@ export default function BounceCards({
         flexShrink: 0,
       }}
     >
-      {images.map((src, idx) => (
-        <div
-          key={`${src}-${idx}`}
-          className={`card card-${idx}`}
-          style={{
-            transform: `${transformStyles[idx] ?? "none"} scale(0)`,
-            zIndex: idx + 1,
-          }}
-          onMouseEnter={() => onCardEnter(idx)}
-          onMouseLeave={() => onCardLeave(idx)}
-          onClick={() => onCardTap(idx)}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="image" src={src} alt={captions[idx] ?? `Memory ${idx + 1}`} />
-          {captions[idx] ? (
-            <span className="card-caption">{captions[idx]}</span>
-          ) : null}
-        </div>
-      ))}
+      {images.map((src, idx) => {
+        const cardColor = borderColors[idx];
+        const isSticker = src.toLowerCase().includes("party-cat");
+        const cardStyle: React.CSSProperties = {
+          transform: `${transformStyles[idx] ?? "none"} scale(0)`,
+          zIndex: idx + 1,
+        };
+        if (cardColor) {
+          cardStyle.borderColor = cardColor;
+          (cardStyle as Record<string, string>)["--card-border"] = cardColor;
+          (cardStyle as Record<string, string>)["--card-glow"] = cardColor
+            .replace("rgb(", "rgba(")
+            .replace(")", ", 0.25)");
+        }
+
+        return (
+          <div
+            key={`${src}-${idx}`}
+            className={`card card-${idx}${isSticker ? " is-sticker" : ""}`}
+            style={cardStyle}
+            onMouseEnter={() => onCardEnter(idx)}
+            onMouseLeave={() => onCardLeave(idx)}
+            onClick={() => onCardTap(idx)}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              ref={(el) => {
+                imgRefs.current[idx] = el;
+              }}
+              className="image"
+              src={src}
+              alt={captions[idx] ?? `Memory ${idx + 1}`}
+              crossOrigin="anonymous"
+              onLoad={(e) => handleImageLoad(e.currentTarget, idx)}
+            />
+            {captions[idx] ? (
+              <span className="card-caption">{captions[idx]}</span>
+            ) : null}
+          </div>
+        );
+      })}
     </div>
   );
 }
