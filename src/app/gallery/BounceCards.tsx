@@ -13,7 +13,7 @@ export type CardSizeVariant =
   | "square"
   | "small";
 
-export type CardSizeConfig = {
+type CardSizeConfig = {
   width?: string;
   aspectRatio?: string;
   className?: string;

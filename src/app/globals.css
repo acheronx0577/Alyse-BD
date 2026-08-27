@@ -695,11 +695,23 @@ button.btn {
 .birthday-bottom-img {
   flex-shrink: 0;
   margin-top: auto;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+  will-change: transform;
+}
+
+.birthday-bottom-img:hover {
+  transform: translateY(-8px) scale(1.02);
 }
 
 .birthday-bottom-img img {
   max-height: clamp(200px, 55vh, 900px);
   object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgba(255, 128, 147, 0.18));
+  transition: filter 0.3s ease;
+}
+
+.birthday-bottom-img:hover img {
+  filter: drop-shadow(0 18px 36px rgba(255, 128, 147, 0.32));
 }
 
 /* MESSAGES */
@@ -1511,3 +1523,283 @@ button.btn {
     height: clamp(130px, 22vh, 250px);
   }
 }
+
+/* ==========================================================================
+   PAGE TRANSITION OVERLAYS (GSAP Multi-Curtain)
+   ========================================================================== */
+.transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  will-change: transform;
+}
+
+.transition-overlay.overlay-0 {
+  background-color: var(--bg);
+}
+
+.transition-overlay.overlay-1 {
+  background-color: var(--pink);
+}
+
+.transition-overlay.overlay-2 {
+  background-color: var(--sky);
+}
+
+.transition-overlay.overlay-3 {
+  background-color: var(--mint);
+}
+
+.transition-overlay.overlay-4 {
+  background-color: var(--gold);
+}
+
+.transition-overlay.overlay-5 {
+  background-color: var(--ink);
+}
+
+/* ==========================================================================
+   LOADING SCREEN (Celebration + Percentage + Progress Bar + Hover Trail)
+   ========================================================================== */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--bg);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3.5rem);
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.loading-screen-title {
+  font-family: inherit;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  margin: 0;
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  padding: 0 var(--space-md);
+}
+
+/* Loading Button / Progress Bar */
+.loading-button {
+  position: relative;
+  width: min(1080px, 78vw);
+  height: clamp(92px, 12.5vh, 160px);
+  border: none;
+  border-radius: 9999px;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 0.6vh, 8px);
+  box-shadow:
+    0 0 0 clamp(5px, 0.6vw, 8px) var(--pink),
+    clamp(6px, 0.8vw, 12px) clamp(6px, 0.8vw, 12px) 0 clamp(5px, 0.6vw, 8px) var(--ink);
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.loading-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.22) 0,
+    rgba(255, 255, 255, 0.22) 18px,
+    transparent 18px,
+    transparent 36px
+  );
+  animation: loadingStripeMove 3s ease-in-out forwards;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.loading-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--pink) 0%,
+    var(--gold) 35%,
+    var(--mint) 70%,
+    var(--sky) 100%
+  );
+  background-size: 200% 100%;
+  z-index: 0;
+  animation: loadingBarProgress 3s ease-in-out forwards;
+  border-radius: inherit;
+  transform: translateX(-98%);
+}
+
+.loading-button-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2px, 0.4vh, 6px);
+}
+
+.loading-button-text p:not(.loading-button-percent) {
+  font-size: clamp(1rem, 1.4vw, 1.65rem);
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.loading-button-percent {
+  font-weight: 900;
+  font-size: clamp(2rem, 3.8vw, 4.2rem);
+  margin: 0;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+@keyframes loadingBarProgress {
+  0% {
+    transform: translateX(-98%);
+  }
+  100% {
+    transform: translateX(-33%);
+  }
+}
+
+@keyframes loadingStripeMove {
+  0% {
+    transform: translateX(-98%);
+  }
+  100% {
+    transform: translateX(-33%);
+  }
+}
+
+/* Loading Screen Top & Bottom Badges */
+.loading-screen-logo {
+  position: absolute;
+  top: clamp(1.2rem, 3vh, 2.5rem);
+  left: clamp(1.2rem, 3vw, 2.5rem);
+  padding: 0.5rem 0.9rem;
+  background-color: var(--pink);
+  color: var(--white);
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(255, 128, 147, 0.25);
+  z-index: 10;
+}
+
+.loading-screen-logo a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.loading-screen-btn {
+  position: absolute;
+  top: clamp(1.2rem, 3vh, 2.5rem);
+  right: clamp(1.2rem, 3vw, 2.5rem);
+  padding: 0.5rem 0.9rem;
+  background-color: var(--cream);
+  color: var(--ink);
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(255, 209, 102, 0.2);
+  z-index: 10;
+}
+
+.loading-tag-text {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.loading-screen-footer {
+  position: absolute;
+  bottom: clamp(1.2rem, 3vh, 2.5rem);
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  box-sizing: border-box;
+  color: var(--ink-soft);
+}
+
+.loading-dots {
+  display: inline-block;
+  margin-left: 0.2ch;
+  width: 1.5ch;
+  text-align: left;
+}
+
+.loading-dots::after {
+  content: "";
+  animation: loadingDots 1.5s steps(4, end) infinite;
+}
+
+@keyframes loadingDots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+  100% { content: ""; }
+}
+
+/* Hover Trail */
+.loading-screen .trail-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.loading-screen .trail-img {
+  position: absolute;
+  width: clamp(90px, 12vw, 150px) !important;
+  height: auto;
+  border-radius: 14px;
+  border: 3px solid var(--white);
+  box-shadow: 0 10px 24px rgba(73, 53, 39, 0.22);
+  transform-origin: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
