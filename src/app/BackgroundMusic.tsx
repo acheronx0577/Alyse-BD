@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 const STORAGE_KEY_VOLUME = "alyse-bg-music-volume";
 const STORAGE_KEY_MUTED = "alyse-bg-music-muted";
 const DEFAULT_VOLUME = 0.6;
-const MUSIC_SRC = "/music/super-idol.mp3";
+const MUSIC_SRC = "/music/song.mp3";
 
 function getSavedVolume(): number {
   if (typeof window === "undefined") return DEFAULT_VOLUME;
@@ -116,8 +116,8 @@ export function BackgroundMusic() {
     if (typeof window !== "undefined" && "mediaSession" in navigator) {
       try {
         navigator.mediaSession.metadata = new MediaMetadata({
-          title: "Super Idol (热爱105°C的你)",
-          artist: "Shania Yan Cover",
+          title: "Birthday Song",
+          artist: "Background Music",
           album: "Alyse's Birthday Celebration",
         });
         navigator.mediaSession.setActionHandler("play", () => {
@@ -192,7 +192,7 @@ export function BackgroundMusic() {
           className="bg-music-btn bg-music-play-btn"
           onClick={togglePlay}
           aria-label={isPlaying ? "Pause background music" : "Play background music"}
-          title={isPlaying ? "Pause Super Idol" : "Play Super Idol"}
+          title={isPlaying ? "Pause music" : "Play music"}
         >
           {isPlaying && !effectiveMuted ? (
             <span className="bg-music-equalizer" aria-hidden="true">
@@ -209,8 +209,8 @@ export function BackgroundMusic() {
         </button>
 
         <div className="bg-music-info">
-          <span className="bg-music-title">Super Idol</span>
-          <span className="bg-music-tag">♫ 105°C</span>
+          <span className="bg-music-title">Birthday Song</span>
+          <span className="bg-music-tag">♫ BGM</span>
         </div>
 
         <div className="bg-music-controls">
