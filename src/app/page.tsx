@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PageShell } from "./PageShell";
 
@@ -32,6 +33,28 @@ export default function Home() {
         <span className="heart h4">♡</span>
         <span className="heart h5">♡</span>
       </section>
+
+      <div
+        className="birthday-bottom-img"
+        style={{
+          width: "80%",
+          marginTop: "auto",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: "0",
+          position: "relative" as const,
+          zIndex: 1,
+        }}
+      >
+        <Image
+          src="/birthday-bottom.png"
+          alt="Cute Sanrio birthday characters celebrating"
+          width={1792}
+          height={560}
+          style={{ width: "100%", height: "auto" }}
+          priority
+        />
+      </div>
     </PageShell>
   );
 }
