@@ -19,20 +19,12 @@
   box-shadow:
     0 12px 30px rgba(73, 53, 39, 0.18),
     0 3px 12px var(--card-glow, rgba(255, 121, 145, 0.12));
-  background: #fff;
+  background: #ffffff;
+  opacity: 1 !important;
   cursor: pointer;
-  will-change: transform, opacity;
+  will-change: transform;
   backface-visibility: hidden;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.bounceCardsContainer .card.is-sticker {
-  background: linear-gradient(160deg, #ffd5dc, #fff9f3);
-}
-
-.bounceCardsContainer .card.is-sticker .image {
-  object-fit: contain;
-  padding: clamp(0.55rem, 0.9vw, 1.1rem);
 }
 
 .bounceCardsContainer .card .image {
@@ -40,6 +32,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  background-color: #ffffff;
+  opacity: 1 !important;
 }
 
 .bounceCardsContainer .card-caption {

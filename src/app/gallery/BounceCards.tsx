@@ -18,7 +18,7 @@ type BounceCardsProps = {
   hoverPushOffset?: number;
 };
 
-/** Pointer must rest on a card this long before clear-out starts */
+/** Pointer must rest on a card this long before clear-out starts (fast hover guard) */
 const HOVER_ACTIVATE_MS = 220;
 
 function extractDominantColor(img: HTMLImageElement): string | null {
@@ -123,12 +123,22 @@ export default function BounceCards({
   const [borderColors, setBorderColors] = useState<Record<number, string>>({});
   const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
 
+  const topZIndexRef = useRef<number>(images.length + 10);
+  const cardZIndicesRef = useRef<number[]>(images.map((_, i) => i + 1));
+
   const handleImageLoad = (img: HTMLImageElement, idx: number) => {
     const col = extractDominantColor(img);
     if (col) {
       setBorderColors((prev) => (prev[idx] === col ? prev : { ...prev, [idx]: col }));
     }
   };
+
+  useEffect(() => {
+    if (cardZIndicesRef.current.length !== images.length) {
+      cardZIndicesRef.current = images.map((_, i) => i + 1);
+      topZIndexRef.current = images.length + 10;
+    }
+  }, [images]);
 
   useEffect(() => {
     imgRefs.current.forEach((img, idx) => {
@@ -175,8 +185,10 @@ export default function BounceCards({
       mm.add("(prefers-reduced-motion: reduce)", () => {
         images.forEach((_, i) => {
           const base = styles[i] || "none";
+          const zIndex = cardZIndicesRef.current[i] ?? (i + 1);
           gsap.set(`.card-${i}`, {
             transform: `${base} scale(1)`,
+            zIndex,
             opacity: 1,
           });
         });
@@ -185,11 +197,13 @@ export default function BounceCards({
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         images.forEach((_, i) => {
           const base = styles[i] || "none";
+          const zIndex = cardZIndicesRef.current[i] ?? (i + 1);
           gsap.fromTo(
             `.card-${i}`,
-            { transform: `${base} scale(0)`, opacity: 0 },
+            { transform: `${base} scale(0)`, opacity: 1 },
             {
               transform: `${base} scale(1)`,
+              zIndex,
               opacity: 1,
               duration: 0.85,
               ease: easeType,
@@ -213,9 +227,10 @@ export default function BounceCards({
     const q = gsap.utils.selector(containerRef);
     images.forEach((_, i) => {
       const base = transformStyles[i] || "none";
+      const zIndex = cardZIndicesRef.current[i] ?? (i + 1);
       gsap.set(q(`.card-${i}`), {
         transform: `${base} scale(1)`,
-        zIndex: i + 1,
+        zIndex,
         pointerEvents: "auto",
       });
     });
@@ -259,28 +274,47 @@ export default function BounceCards({
     }
   };
 
+  const animateCard = (
+    index: number,
+    transform: string,
+    zIndex: number,
+    pointerEvents: "auto" | "none" = "auto",
+    duration = 0.35,
+  ) => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    const target = q(`.card-${index}`);
+    gsap.killTweensOf(target);
+    gsap.to(target, {
+      transform,
+      zIndex,
+      pointerEvents,
+      duration,
+      ease: "power2.out",
+      overwrite: true,
+    });
+  };
+
   const applyHoverState = (hoveredIdx: number) => {
     if (!containerRef.current) return;
 
-    const q = gsap.utils.selector(containerRef);
     const styles = transformStylesRef.current;
     activeIdxRef.current = hoveredIdx;
 
-    images.forEach((_, i) => {
-      const target = q(`.card-${i}`);
-      gsap.killTweensOf(target);
+    topZIndexRef.current += 1;
+    cardZIndicesRef.current[hoveredIdx] = topZIndexRef.current;
 
+    images.forEach((_, i) => {
       const baseTransform = styles[i] || "none";
+      const zIndex = cardZIndicesRef.current[i] ?? (i + 1);
 
       if (i === hoveredIdx) {
-        gsap.to(target, {
-          transform: `${baseTransform} scale(1.08)`,
-          zIndex: 9999,
-          pointerEvents: "auto",
-          duration: 0.35,
-          ease: "power2.out",
-          overwrite: true,
-        });
+        animateCard(
+          i,
+          `${baseTransform} scale(1.08)`,
+          topZIndexRef.current,
+          "auto",
+        );
       } else {
         const distance = Math.abs(hoveredIdx - i);
         const dirX = i < hoveredIdx ? -1 : 1;
@@ -288,15 +322,12 @@ export default function BounceCards({
         const dirY = i < mid ? -1 : 1;
         const offsetX = dirX * (hoverPushOffset + distance * 6);
         const offsetY = dirY * (16 + distance * 4);
-
-        gsap.to(target, {
-          transform: getPushedTransform(baseTransform, offsetX, offsetY),
-          zIndex: i + 1,
-          pointerEvents: "none",
-          duration: 0.35,
-          ease: "power2.out",
-          overwrite: true,
-        });
+        animateCard(
+          i,
+          getPushedTransform(baseTransform, offsetX, offsetY),
+          zIndex,
+          "none",
+        );
       }
     });
   };
@@ -304,22 +335,13 @@ export default function BounceCards({
   const resetToBase = () => {
     if (!containerRef.current) return;
 
-    const q = gsap.utils.selector(containerRef);
     const styles = transformStylesRef.current;
     activeIdxRef.current = null;
 
     images.forEach((_, i) => {
-      const target = q(`.card-${i}`);
-      gsap.killTweensOf(target);
       const baseTransform = styles[i] || "none";
-      gsap.to(target, {
-        transform: `${baseTransform} scale(1)`,
-        zIndex: i + 1,
-        pointerEvents: "auto",
-        duration: 0.35,
-        ease: "power2.out",
-        overwrite: true,
-      });
+      const zIndex = cardZIndicesRef.current[i] ?? (i + 1);
+      animateCard(i, `${baseTransform} scale(1)`, zIndex, "auto");
     });
   };
 
@@ -378,10 +400,10 @@ export default function BounceCards({
     >
       {images.map((src, idx) => {
         const cardColor = borderColors[idx];
-        const isSticker = src.toLowerCase().includes("party-cat");
         const cardStyle: React.CSSProperties = {
           transform: `${transformStyles[idx] ?? "none"} scale(0)`,
-          zIndex: idx + 1,
+          zIndex: cardZIndicesRef.current[idx] ?? (idx + 1),
+          opacity: 1,
         };
         if (cardColor) {
           cardStyle.borderColor = cardColor;
@@ -394,7 +416,7 @@ export default function BounceCards({
         return (
           <div
             key={`${src}-${idx}`}
-            className={`card card-${idx}${isSticker ? " is-sticker" : ""}`}
+            className={`card card-${idx}`}
             style={cardStyle}
             onMouseEnter={() => onCardEnter(idx)}
             onMouseLeave={() => onCardLeave(idx)}
