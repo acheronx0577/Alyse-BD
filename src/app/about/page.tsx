@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { PageShell } from "../PageShell";
 
 const ABOUT_PILLS = [
@@ -12,8 +13,20 @@ export default function AboutPage() {
     <PageShell variant="about">
       <section className="content-section">
         <div className="about-grid">
-          <div className="about-photo" aria-hidden="true">
-            🌸
+          <div className="about-photo">
+            <Image
+              src="/alyse-about.png"
+              alt="Alyse illustration"
+              width={1024}
+              height={1536}
+              priority
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "inherit",
+              }}
+            />
           </div>
           <div className="about-copy">
             <h1>Meet Alyse ✨</h1>
