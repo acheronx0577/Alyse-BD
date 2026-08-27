@@ -11,20 +11,47 @@
 
 .bounceCardsContainer .card {
   position: absolute;
-  width: clamp(155px, 11vw, 245px);
-  aspect-ratio: 3 / 4;
+  width: var(--card-w, clamp(190px, 13vw, 290px));
+  aspect-ratio: var(--card-ratio, 3 / 4);
   border: clamp(6px, 0.55vw, 10px) solid var(--card-border, #fff7f0);
   border-radius: clamp(12px, 0.9vw, 18px);
   overflow: hidden;
   box-shadow:
-    0 12px 30px rgba(73, 53, 39, 0.18),
-    0 3px 12px var(--card-glow, rgba(255, 121, 145, 0.12));
+    0 14px 36px rgba(73, 53, 39, 0.18),
+    0 4px 14px var(--card-glow, rgba(255, 121, 145, 0.14));
   background: #ffffff;
   opacity: 1 !important;
   cursor: pointer;
   will-change: transform;
   backface-visibility: hidden;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Modifiers for varied photo sizes & rectangles */
+.bounceCardsContainer .card.is-wide,
+.bounceCardsContainer .card.is-landscape {
+  width: var(--card-w, clamp(260px, 18vw, 390px));
+  aspect-ratio: var(--card-ratio, 16 / 10);
+}
+
+.bounceCardsContainer .card.is-large {
+  width: var(--card-w, clamp(225px, 15.5vw, 340px));
+  aspect-ratio: var(--card-ratio, 4 / 3);
+}
+
+.bounceCardsContainer .card.is-tall {
+  width: var(--card-w, clamp(175px, 11.8vw, 260px));
+  aspect-ratio: var(--card-ratio, 9 / 16);
+}
+
+.bounceCardsContainer .card.is-square {
+  width: var(--card-w, clamp(200px, 13.5vw, 295px));
+  aspect-ratio: var(--card-ratio, 1 / 1);
+}
+
+.bounceCardsContainer .card.is-small {
+  width: var(--card-w, clamp(165px, 11vw, 240px));
+  aspect-ratio: var(--card-ratio, 3 / 4);
 }
 
 .bounceCardsContainer .card .image {
@@ -56,9 +83,22 @@
 
 @media (max-width: 700px) {
   .bounceCardsContainer .card {
-    width: min(112px, 30vw);
+    width: var(--card-w, min(128px, 33vw));
     border-width: 4.5px;
     border-radius: 10px;
+  }
+
+  .bounceCardsContainer .card.is-wide,
+  .bounceCardsContainer .card.is-landscape {
+    width: var(--card-w, min(165px, 44vw));
+  }
+
+  .bounceCardsContainer .card.is-large {
+    width: var(--card-w, min(145px, 38vw));
+  }
+
+  .bounceCardsContainer .card.is-tall {
+    width: var(--card-w, min(114px, 30vw));
   }
 
   .bounceCardsContainer .card-caption {

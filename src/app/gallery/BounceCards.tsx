@@ -4,10 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./BounceCards.css";
 
+export type CardSizeVariant =
+  | "normal"
+  | "wide"
+  | "landscape"
+  | "large"
+  | "tall"
+  | "square"
+  | "small";
+
+export type CardSizeConfig = {
+  width?: string;
+  aspectRatio?: string;
+  className?: string;
+};
+
 type BounceCardsProps = {
   className?: string;
   images?: string[];
   captions?: string[];
+  cardSizes?: Array<CardSizeVariant | CardSizeConfig>;
   containerWidth?: number;
   containerHeight?: number;
   animationDelay?: number;
@@ -97,6 +113,7 @@ export default function BounceCards({
   className = "",
   images = [],
   captions = [],
+  cardSizes = [],
   containerWidth = 400,
   containerHeight = 400,
   animationDelay = 0.5,
@@ -400,11 +417,30 @@ export default function BounceCards({
     >
       {images.map((src, idx) => {
         const cardColor = borderColors[idx];
+        const sizeItem = cardSizes?.[idx];
+        let sizeClass = "";
+        let customWidth: string | undefined;
+        let customRatio: string | undefined;
+
+        if (typeof sizeItem === "string") {
+          sizeClass = ` is-${sizeItem}`;
+        } else if (sizeItem) {
+          if (sizeItem.className) sizeClass = ` ${sizeItem.className}`;
+          customWidth = sizeItem.width;
+          customRatio = sizeItem.aspectRatio;
+        }
+
         const cardStyle: React.CSSProperties = {
           transform: `${transformStyles[idx] ?? "none"} scale(0)`,
           zIndex: cardZIndicesRef.current[idx] ?? (idx + 1),
           opacity: 1,
         };
+        if (customWidth) {
+          (cardStyle as Record<string, string>)["--card-w"] = customWidth;
+        }
+        if (customRatio) {
+          (cardStyle as Record<string, string>)["--card-ratio"] = customRatio;
+        }
         if (cardColor) {
           cardStyle.borderColor = cardColor;
           (cardStyle as Record<string, string>)["--card-border"] = cardColor;
@@ -416,7 +452,7 @@ export default function BounceCards({
         return (
           <div
             key={`${src}-${idx}`}
-            className={`card card-${idx}`}
+            className={`card card-${idx}${sizeClass}`}
             style={cardStyle}
             onMouseEnter={() => onCardEnter(idx)}
             onMouseLeave={() => onCardLeave(idx)}

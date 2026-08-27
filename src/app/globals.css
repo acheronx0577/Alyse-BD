@@ -499,8 +499,21 @@ button.btn {
 
 @media (min-width: 761px) and (max-width: 1599px) {
   .gallery-bounceCards.bounceCardsContainer.is-laptop .card {
-    width: clamp(175px, 13.5vw, 220px) !important;
+    width: var(--card-w, clamp(195px, 14.5vw, 260px)) !important;
     border-width: clamp(6px, 0.55vw, 9px);
+  }
+
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card.is-wide,
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card.is-landscape {
+    width: var(--card-w, clamp(255px, 18.5vw, 340px)) !important;
+  }
+
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card.is-large {
+    width: var(--card-w, clamp(225px, 16vw, 295px)) !important;
+  }
+
+  .gallery-bounceCards.bounceCardsContainer.is-laptop .card.is-tall {
+    width: var(--card-w, clamp(170px, 12vw, 225px)) !important;
   }
 
   .gallery-bounceCards.bounceCardsContainer.is-laptop .card-caption {

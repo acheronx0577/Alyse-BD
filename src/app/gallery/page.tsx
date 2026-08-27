@@ -1,7 +1,7 @@
 "use client";
 
 import { PageShell } from "../PageShell";
-import BounceCards, { useGalleryLayout } from "./BounceCards";
+import BounceCards, { CardSizeVariant, useGalleryLayout } from "./BounceCards";
 
 const GALLERY_IMAGES = [
   "/gallery/IMG_20230816_135126_135.webp",
@@ -27,6 +27,19 @@ const GALLERY_CAPTIONS = [
   "Tree Top 🌿",
   "Art Mode 🎨",
   "Coast View 🌊",
+];
+
+const GALLERY_CARD_SIZES: CardSizeVariant[] = [
+  "tall",      // Subway 💚 (portrait)
+  "normal",    // Ocean Drive 🌊 (3:4)
+  "landscape", // Palm Beach 🌴 (4:3)
+  "tall",      // Sketching ✏️ (portrait sketch)
+  "wide",      // Magic Hour ✨ (16:9 centerpiece rectangle)
+  "wide",      // Golden Sun 🌅 (16:9 rectangle)
+  "large",     // Blue Sky 🌤️ (4:3 large)
+  "landscape", // Tree Top 🌿 (4:3)
+  "tall",      // Art Mode 🎨 (portrait sketch)
+  "large",     // Coast View 🌊 (4:3 large)
 ];
 
 /* Coordinates kept well inside design canvas */
@@ -123,6 +136,7 @@ export default function GalleryPage() {
             className={`gallery-bounceCards${config.className}`}
             images={GALLERY_IMAGES}
             captions={GALLERY_CAPTIONS}
+            cardSizes={GALLERY_CARD_SIZES}
             containerWidth={config.containerWidth}
             containerHeight={config.containerHeight}
             animationDelay={0.15}
