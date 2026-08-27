@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { PageTransitionProvider } from "./motion/PageTransitionProvider";
+import { BackgroundMusic } from "./BackgroundMusic";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,7 +34,10 @@ export default function RootLayout({
       </head>
       <body>
         <ConvexClientProvider>
-          <PageTransitionProvider>{children}</PageTransitionProvider>
+          <PageTransitionProvider>
+            {children}
+            <BackgroundMusic />
+          </PageTransitionProvider>
         </ConvexClientProvider>
         <Script src="/brand-bounce.js" strategy="afterInteractive" />
       </body>
